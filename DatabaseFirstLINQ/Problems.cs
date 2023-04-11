@@ -88,14 +88,27 @@ namespace DatabaseFirstLINQ
         {
             // Write a LINQ query that gets all of the users who registered BEFORE 2016
             // Then print each user's email and registration date to the console.
+            var startOf2016 = new DateTime(2016, 1, 1, 0, 0, 0);
+            var usersRegisteredBefore2016 = _context.Users.Where(p => p.RegistrationDate < startOf2016);
 
+            foreach (User user in usersRegisteredBefore2016) 
+            {
+                Console.WriteLine(user.Email + " " + user.RegistrationDate); 
+            }
         }
 
         private void ProblemSix()
         {
             // Write a LINQ query that gets all of the users who registered AFTER 2016 and BEFORE 2018
             // Then print each user's email and registration date to the console.
+            var endOf2016 = new DateTime(2016, 12, 31, 23, 59, 59);
+            var startOf2018 = new DateTime(2018, 1, 1, 0, 0, 0);
+            var usersRegisteredBetween2016And2018 = _context.Users.Where(p => p.RegistrationDate > endOf2016 && p.RegistrationDate < startOf2018);
 
+            foreach (User user in usersRegisteredBetween2016And2018)
+            {
+                Console.WriteLine(user.Email + " " + user.RegistrationDate);            
+            }
         }
 
         // <><><><><><><><> R Actions (Read) with Foreign Keys <><><><><><><><><>
