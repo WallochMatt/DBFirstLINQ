@@ -23,8 +23,8 @@ namespace DatabaseFirstLINQ
             //ProblemSix();
             //ProblemSeven();
             //ProblemEight();
-            ProblemNine();
-            //ProblemTen();
+            //ProblemNine();
+            ProblemTen();
             //ProblemEleven();
             //ProblemTwelve();
             //ProblemThirteen();
@@ -68,7 +68,7 @@ namespace DatabaseFirstLINQ
 
             foreach (Product product in productsOver150) 
             {
-                Console.WriteLine(product.Name + " " + product.Price);
+                Console.WriteLine(product.Name + " $" + product.Price);
             }
         }
 
@@ -131,7 +131,7 @@ namespace DatabaseFirstLINQ
             var aftonCart = _context.ShoppingCarts.Include(sc => sc.Product).Include(sc => sc.User).Where(sc => sc.User.Email == "afton@gmail.com");
             foreach (ShoppingCart shoppingCart in aftonCart)
             {
-                Console.WriteLine($"Product: {shoppingCart.Product.Name} Price: {shoppingCart.Product.Price} Quantity: {shoppingCart.Quantity}");
+                Console.WriteLine($"Product: {shoppingCart.Product.Name} Price: ${shoppingCart.Product.Price} Quantity: {shoppingCart.Quantity}");
             }
 
         }
@@ -142,13 +142,29 @@ namespace DatabaseFirstLINQ
             // HINT: End of query will be: .Select(sc => sc.Product.Price).Sum();
             // Then print the total of the shopping cart to the console.
             var odaProductsTotal = _context.ShoppingCarts.Include(sc => sc.Product).Include(sc => sc.User).Where(sc => sc.User.Email == "oda@gmail.com").Select(sc => sc.Product.Price).Sum();
-            Console.WriteLine($"Total: {odaProductsTotal}");
+            Console.WriteLine($"Total: ${odaProductsTotal}");
         }
 
         private void ProblemTen()
         {
             // Write a LINQ query that retreives all of the products in the shopping cart of users who have the role of "Employee".
             // Then print the user's email as well as the product's name, price, and quantity to the console.
+
+            var employeeCarts = _context.ShoppingCarts.Include(sc => sc.Product).Include(sc => sc.User).Where(sc => _context.UserRoles.Where(ur => ur.UserId == sc.UserId).First().Role.RoleName == "Employee");
+
+            foreach (var shoppingCart in employeeCarts)
+            {
+                Console.WriteLine($"Order: " +
+                    $"\n \t Email: {shoppingCart.User.Email} \n \t Product: {shoppingCart.Product.Name} \n \t " +
+                    $"Price: ${shoppingCart.Product.Price} \n \t Quantity: {shoppingCart.Quantity}");
+            }
+
+
+            //var employees = 
+            //    from cart in _context.ShoppingCarts
+            //    join ur in _context.UserRoles.Include(ur => ur.Role).Where(ur => ur.Role.RoleName == "Employee") on cart.UserId equals ur.UserId
+            //    select new { CartUser = cart.UserId, CartProduct = cart.ProductId, Amount = cart.Quantity };
+
 
         }
 
