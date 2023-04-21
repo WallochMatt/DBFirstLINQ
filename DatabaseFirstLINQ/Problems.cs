@@ -336,25 +336,28 @@ namespace DatabaseFirstLINQ
             // Display the total of each users shopping cart as well as the total of the toals to the console.
 
 
-            IDictionary userCarts = new Dictionary<int, int>();
-
+            IDictionary userCarts = new Dictionary<string, int>(); 
+            //Creates a dictionary with Users (by their email) correlating to quantity of products (set at 0)
             foreach (User user in _context.Users)
             {
-                userCarts.Add(user.Id, 0);
-            }
+                userCarts.Add(user.Email, 0);
+            };
 
+            //Totals up the products for users and a grand total by adding to the dictionary
             int? grandTotal = 0;
             foreach (ShoppingCart cart in _context.ShoppingCarts.Include(cart => cart.User)) 
             {
-                int? oldVal = (int)userCarts[cart.UserId];
+                int? oldVal = (int)userCarts[cart.User.Email];
                 int? newVal = oldVal + cart.Quantity;
-                userCarts[cart.UserId] = newVal;
+                userCarts[cart.User.Email] = newVal;
                 grandTotal += cart.Quantity;
             };
+
+            //Prints info from the dictionary
             foreach (DictionaryEntry de in userCarts)
             {
                 Console.WriteLine("User: {0} has {1} item(s)", de.Key, de.Value);
-            }
+            };
             Console.WriteLine($"Grand total: {grandTotal}");
      
         }
