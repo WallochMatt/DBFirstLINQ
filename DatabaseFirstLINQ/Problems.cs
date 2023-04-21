@@ -34,7 +34,10 @@ namespace DatabaseFirstLINQ
             //ProblemSeventeen();
             //ProblemEighteen();
             //ProblemNineteen();
-            ProblemTwenty();
+            //ProblemTwenty();
+            BonusOne();
+            //BonusTwo();
+            //BonusThree();
         }
 
         // <><><><><><><><> R Actions (Read) <><><><><><><><><>
@@ -299,6 +302,30 @@ namespace DatabaseFirstLINQ
             // Prompt the user to enter in an email and password through the console.
             // Take the email and password and check if the there is a person that matches that combination.
             // Print "Signed In!" to the console if they exists and the values match otherwise print "Invalid Email or Password.".
+
+            Console.WriteLine("Enter email: ");
+            string userEmail = Console.ReadLine();
+
+            Console.WriteLine("Enter password: ");
+            string userPassword = Console.ReadLine();
+
+            var givenEmail = _context.Users.Where(user => user.Email == userEmail).SingleOrDefault();
+            if (givenEmail != null) 
+            {
+                if (givenEmail.Password == userPassword)
+                {
+                    Console.WriteLine($"Signed In!");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Password");
+                }
+            }
+            else 
+            {
+                Console.WriteLine("Invalid Email"); 
+            };
+            
         }
 
         private void BonusTwo()
