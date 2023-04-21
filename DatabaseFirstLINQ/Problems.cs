@@ -2,6 +2,8 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using DatabaseFirstLINQ.Models;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace DatabaseFirstLINQ
 {
@@ -35,8 +37,8 @@ namespace DatabaseFirstLINQ
             //ProblemEighteen();
             //ProblemNineteen();
             //ProblemTwenty();
-            BonusOne();
-            //BonusTwo();
+            //BonusOne();
+            BonusTwo();
             //BonusThree();
         }
 
@@ -332,6 +334,29 @@ namespace DatabaseFirstLINQ
         {
             // Write a query that finds the total of every users shopping cart products using LINQ.
             // Display the total of each users shopping cart as well as the total of the toals to the console.
+
+
+            IDictionary userCarts = new Dictionary<int, int>();
+
+            foreach (User user in _context.Users)
+            {
+                userCarts.Add(user.Id, 0);
+            }
+
+            int? grandTotal = 0;
+            foreach (ShoppingCart cart in _context.ShoppingCarts.Include(cart => cart.User)) 
+            {
+                int? oldVal = (int)userCarts[cart.UserId];
+                int? newVal = oldVal + cart.Quantity;
+                userCarts[cart.UserId] = newVal;
+                grandTotal += cart.Quantity;
+            };
+            foreach (DictionaryEntry de in userCarts)
+            {
+                Console.WriteLine("User: {0} has {1} item(s)", de.Key, de.Value);
+            }
+            Console.WriteLine($"Grand total: {grandTotal}");
+     
         }
 
         // BIG ONE
