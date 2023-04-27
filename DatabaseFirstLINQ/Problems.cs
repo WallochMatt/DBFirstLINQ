@@ -402,44 +402,61 @@ namespace DatabaseFirstLINQ
                 Console.WriteLine("Invalid Email");
             };
 
+
+
+
+
+
             //Console Menu
             if (signedInSuccess == true) 
             {
                 Console.WriteLine("Select an option: " + "\n1) View all products in your cart " + "\n2) View all available products "
-                    + "\n3) Add a product to your cart " + "\n4) Remove a product from your cart" + "");
+                    + "\n3) Add a product to your cart " + "\n4) Remove a product from your cart" + "\n5) Log out");
 
-                
-                string response = Console.ReadLine();
-                switch (Int32.Parse(response)) 
+                while (signedInSuccess == true)
                 {
-                    case 1:
-                        Console.WriteLine("Your cart: ");
-                        var userCart = _context.ShoppingCarts.Include(sc => sc.Product).Include(sc => sc.User).Where(sc => sc.User.Email == userEmail);
-                        foreach (ShoppingCart shoppingCart in userCart)
-                        {
-                            Console.WriteLine($"Product: {shoppingCart.Product.Name} Price: ${shoppingCart.Product.Price} Quantity: {shoppingCart.Quantity}");
-                        }
-                        break;
+                    Console.WriteLine("Select an option");
+                    string response = Console.ReadLine();
+                    switch (Int32.Parse(response))
+                    {
+                        case 1:
+                            Console.WriteLine("Your cart: ");
+                            var userCart = _context.ShoppingCarts.Include(sc => sc.Product).Include(sc => sc.User).Where(sc => sc.User.Email == userEmail);
+                            foreach (ShoppingCart shoppingCart in userCart)
+                            {
+                                Console.WriteLine($"Product: {shoppingCart.Product.Name} Price: ${shoppingCart.Product.Price} Quantity: {shoppingCart.Quantity}");
+                            }
+                            break;
 
-                    case 2:
-                        Console.WriteLine("All products");
-                        var products = _context.Products;
+                        case 2:
+                            Console.WriteLine("All products");
+                            var products = _context.Products;
 
-                        foreach (Product product in products)
-                        {
-                            Console.WriteLine(product.Name + " $" + product.Price);
-                        }
-                        break;
+                            foreach (Product product in products)
+                            {
+                                Console.WriteLine(product.Name + " $" + product.Price);
+                            }
+                            break;
 
-                    case 3:
-                        Console.WriteLine("Add product");
-                        break;
+                        case 3:
+                            Console.WriteLine("Add product");
+                            break;
 
-                    case 4:
-                        Console.WriteLine("Remove product");
-                        break;
-                    //Make a loop and a case to break out?
+                        case 4:
+                            Console.WriteLine("Remove product");
+                            break;
+
+                        case 5:
+                            Console.WriteLine("Logging out...");
+                            userEmail = null;
+                            userPassword = null;
+                            signedInSuccess = false;
+                            Console.WriteLine("Log out successful");
+                            break;
+                            //Make a loop and a case to break out?
+                    }
                 }
+                
             }
             else
             { 
