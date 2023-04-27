@@ -383,6 +383,7 @@ namespace DatabaseFirstLINQ
             Console.WriteLine("Enter password: ");
             string userPassword = Console.ReadLine();
 
+            //Sign in
             var givenEmail = _context.Users.Where(user => user.Email == userEmail).SingleOrDefault();
             if (givenEmail != null)
             {
@@ -401,10 +402,36 @@ namespace DatabaseFirstLINQ
                 Console.WriteLine("Invalid Email");
             };
 
+            //Console Menu
             if (signedInSuccess == true) 
             {
                 Console.WriteLine("Select an option: " + "\n1) View all products in your cart " + "\n2) View all available products "
                     + "\n3) Add a product to your cart " + "\n4) Remove a product from your cart" + "");
+
+                string response = Console.ReadLine();
+                switch (Int32.Parse(response)) 
+                {
+                    case 1:
+                        Console.WriteLine("Your cart");
+                        var aftonCart = _context.ShoppingCarts.Include(sc => sc.Product).Include(sc => sc.User).Where(sc => sc.User.Email == userEmail);
+                        foreach (ShoppingCart shoppingCart in aftonCart)
+                        {
+                            Console.WriteLine($"Product: {shoppingCart.Product.Name} Price: ${shoppingCart.Product.Price} Quantity: {shoppingCart.Quantity}");
+                        }
+                        break;
+
+                    case 2:
+                        Console.WriteLine("All products");
+                        break;
+
+                    case 3:
+                        Console.WriteLine("Add product");
+                        break;
+
+                    case 4:
+                        Console.WriteLine("Remove product");
+                        break;
+                }
             }
             else
             { 
