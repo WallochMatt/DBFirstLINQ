@@ -408,13 +408,14 @@ namespace DatabaseFirstLINQ
                 Console.WriteLine("Select an option: " + "\n1) View all products in your cart " + "\n2) View all available products "
                     + "\n3) Add a product to your cart " + "\n4) Remove a product from your cart" + "");
 
+                
                 string response = Console.ReadLine();
                 switch (Int32.Parse(response)) 
                 {
                     case 1:
-                        Console.WriteLine("Your cart");
-                        var aftonCart = _context.ShoppingCarts.Include(sc => sc.Product).Include(sc => sc.User).Where(sc => sc.User.Email == userEmail);
-                        foreach (ShoppingCart shoppingCart in aftonCart)
+                        Console.WriteLine("Your cart: ");
+                        var userCart = _context.ShoppingCarts.Include(sc => sc.Product).Include(sc => sc.User).Where(sc => sc.User.Email == userEmail);
+                        foreach (ShoppingCart shoppingCart in userCart)
                         {
                             Console.WriteLine($"Product: {shoppingCart.Product.Name} Price: ${shoppingCart.Product.Price} Quantity: {shoppingCart.Quantity}");
                         }
@@ -422,6 +423,12 @@ namespace DatabaseFirstLINQ
 
                     case 2:
                         Console.WriteLine("All products");
+                        var products = _context.Products;
+
+                        foreach (Product product in products)
+                        {
+                            Console.WriteLine(product.Name + " $" + product.Price);
+                        }
                         break;
 
                     case 3:
@@ -431,6 +438,7 @@ namespace DatabaseFirstLINQ
                     case 4:
                         Console.WriteLine("Remove product");
                         break;
+                    //Make a loop and a case to break out?
                 }
             }
             else
