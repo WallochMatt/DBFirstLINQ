@@ -38,8 +38,8 @@ namespace DatabaseFirstLINQ
             //ProblemNineteen();
             //ProblemTwenty();
             //BonusOne();
-            BonusTwo();
-            //BonusThree();
+            //BonusTwo();
+            BonusThree();
         }
 
         // <><><><><><><><> R Actions (Read) <><><><><><><><><>
@@ -375,6 +375,42 @@ namespace DatabaseFirstLINQ
             // 3. If the user does not succesfully sing in
             // a. Display "Invalid Email or Password"
             // b. Re-prompt the user for credentials
+
+            bool signedInSuccess = false;
+            Console.WriteLine("Enter email: ");
+            string userEmail = Console.ReadLine();
+
+            Console.WriteLine("Enter password: ");
+            string userPassword = Console.ReadLine();
+
+            var givenEmail = _context.Users.Where(user => user.Email == userEmail).SingleOrDefault();
+            if (givenEmail != null)
+            {
+                if (givenEmail.Password == userPassword)
+                {
+                    Console.WriteLine($"Signed In!");
+                    signedInSuccess = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Password");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid Email");
+            };
+
+            if (signedInSuccess == true) 
+            {
+                Console.WriteLine("Select an option: " + "\n1) View all products in your cart " + "\n2) View all available products "
+                    + "\n3) Add a product to your cart " + "\n4) Remove a product from your cart" + "");
+            }
+            else
+            { 
+                Console.WriteLine("Invalid Email or Password");
+                BonusThree(); //Check thoroughly
+            }
 
         }
 
